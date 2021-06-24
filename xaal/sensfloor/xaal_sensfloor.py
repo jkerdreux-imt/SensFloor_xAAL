@@ -129,23 +129,24 @@ class Socketio_class(object):
             for id,name in self.zones_fall.items():
                 name_basic="fall.basic"
                 dev= Device(name_basic)
-                check = "base_addr"+str(i)
                 dev.info = "SensFloor Fall Detection : %s" %name
                 liste_section = list(self.cfg['devices Fall'].keys())
                 if len(liste_section)==0 :
                     #Liste vide
+                    self.cfg['devices Fall'][name]={}
                     base_addr = tools.get_random_base_uuid()
-                    self.cfg['devices Fall'][check]=str(base_addr)
+                    self.cfg['devices Fall'][name]['addr']=base_addr
                     dev.address=base_addr
                 else : 
                     # Liste non vide
-                    if(check in liste_section):
-                        base_addr = tools.str_to_uuid(self.cfg['devices Fall'][check])
+                    if(name in liste_section):
+                        base_addr = tools.str_to_uuid(self.cfg['devices Fall'][name]['addr'])
                         dev.address=base_addr
 
                     else:   #pas present dans la liste
+                        self.cfg['devices Fall'][name]={}
                         base_addr = tools.get_random_base_uuid()
-                        self.cfg['devices Fall'][check]=str(base_addr)
+                        self.cfg['devices Fall'][name]['addr']=base_addr
                         dev.address=base_addr
 
                 fall = dev.new_attribute('Fall')
@@ -167,23 +168,24 @@ class Socketio_class(object):
             for id,name in self.zones_presence.items():
                 name_basic="presence.basic"
                 dev= Device(name_basic)
-                check = "base_addr"+str(i)
                 dev.info = "SensFloor Presence Detection : %s" %name
                 liste_section = list(self.cfg['devices Presence'].keys())
                 if len(liste_section)==0 :
                     #Liste vide
+                    self.cfg['devices Presence'][name]={}
                     base_addr = tools.get_random_base_uuid()
-                    self.cfg['devices Presence'][check]=str(base_addr)
+                    self.cfg['devices Presence'][name]['addr']=base_addr
                     dev.address=base_addr
                 else : 
                     # Liste non vide
-                    if(check in liste_section):
-                        base_addr = tools.str_to_uuid(self.cfg['devices Presence'][check])
+                    if(name in liste_section):
+                        base_addr = tools.str_to_uuid(self.cfg['devices Presence'][name]['addr'])
                         dev.address=base_addr
 
                     else:   #pas present dans la liste
+                        self.cfg['devices Presence'][name]={}
                         base_addr = tools.get_random_base_uuid()
-                        self.cfg['devices Presence'][check]=str(base_addr)
+                        self.cfg['devices Presence'][name]['addr']=base_addr
                         dev.address=base_addr
 
                 presence = dev.new_attribute('Presence')
@@ -234,6 +236,13 @@ class Delay (threading.Thread):
         self.Terminated = True   
 
 if __name__ == '__main__':
+    logger.info('Starting %s' % PACKAGE_NAME)
+    sock=Socketio_class()
+    tasks = [asyncio.ensure_future(sock.run_sio()),asyncio.ensure_future(sock.add_applications())]
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(asyncio.wait(tasks))
+
+def main(eng):
     logger.info('Starting %s' % PACKAGE_NAME)
     sock=Socketio_class()
     tasks = [asyncio.ensure_future(sock.run_sio()),asyncio.ensure_future(sock.add_applications())]
