@@ -242,7 +242,7 @@ if __name__ == '__main__':
     loop = asyncio.get_event_loop()
     loop.run_until_complete(asyncio.wait(tasks))
 
-def main(eng):
+def main():
     logger.info('Starting %s' % PACKAGE_NAME)
     sock=Socketio_class()
     tasks = [asyncio.ensure_future(sock.run_sio()),asyncio.ensure_future(sock.add_applications())]
