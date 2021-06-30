@@ -1,7 +1,7 @@
 from gevent import monkey; monkey.patch_all()
 
 from xaal.lib import tools,Device
-from xaal.lib.asyncio import Engine
+from xaal.lib.asyncio import AsyncEngine
 import threading
 import time
 import socketio
@@ -40,7 +40,7 @@ class Socketio_class(object):
         self.sio.on('funcresult-update', self.etat_app)
         self.sio.on('project', self.project)
         self.sio.on('fall',self.coord_fall_detection)
-        self.eng = Engine()
+        self.eng = AsyncEngine()
         self.devices = {}
         self.time_fall = {}
         atexit.register(self._exit)
@@ -234,13 +234,6 @@ class Delay (threading.Thread):
 
     def stop(self):
         self.Terminated = True   
-
-if __name__ == '__main__':
-    logger.info('Starting %s' % PACKAGE_NAME)
-    sock=Socketio_class()
-    tasks = [asyncio.ensure_future(sock.run_sio()),asyncio.ensure_future(sock.add_applications())]
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(asyncio.wait(tasks))
 
 def run():
     logger.info('Starting %s' % PACKAGE_NAME)
