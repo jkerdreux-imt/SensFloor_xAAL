@@ -12,7 +12,7 @@ setup(
     license='GPL License',
     author='Quentin Mahé',
     #url='',
-    description=('xAAL SensFloor devices' ),
+    description=('xAAL devices for Future Shape SensFloor' ),
     long_description=long_description,
     classifiers=[
         'Programming Language :: Python',
@@ -24,7 +24,6 @@ setup(
     include_package_data=True,
     install_requires=[
         'xaal.lib',
-        'gevent',
-        'pycrypto',
+        'python-socketio==5.0.0',
     ]
 )
