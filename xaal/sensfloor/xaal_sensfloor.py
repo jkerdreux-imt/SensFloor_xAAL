@@ -17,7 +17,7 @@ PACKAGE_NAME = 'xaal.SensFloor'
 logger = logging.getLogger(PACKAGE_NAME)
 FUNCTION_PRESENCE = 'Presence'
 FUNCTION_FALL = 'Fall'
-ATTTRIBUTE_TIME = 'Delay (s) '
+ATTTRIBUTE_TIME = 'Delay (s)'
 ip_addr = 'http://172.25.0.178:8000'
 
 
@@ -92,7 +92,6 @@ class Socketio_class(object):
                     thread.stop()
                     attr_x.value="None"
                     attr_y.value="None"    
-                print("LISTE : ",self.time_fall)
           
     def treatment_msg(self,message):
         if not(len(self.l)==0):
@@ -149,7 +148,7 @@ class Socketio_class(object):
                         self.cfg['devices Fall'][name]['addr']=base_addr
                         dev.address=base_addr
 
-                fall = dev.new_attribute('Fall')
+                fall = dev.new_attribute('fall')
                 coord_x = dev.new_attribute('X')
                 coord_y = dev.new_attribute('Y')
                 delay = dev.new_attribute(ATTTRIBUTE_TIME)
@@ -188,7 +187,7 @@ class Socketio_class(object):
                         self.cfg['devices Presence'][name]['addr']=base_addr
                         dev.address=base_addr
 
-                presence = dev.new_attribute('Presence')
+                presence = dev.new_attribute('presence')
                 presence.value = "init"
                 dev.dump()
                 self.l[id]=dev
@@ -200,10 +199,10 @@ class Socketio_class(object):
 
     def update_attribute(self,dev,id,result):
         if (id in self.zones_presence):
-            attr=dev.get_attribute(FUNCTION_PRESENCE)
+            attr=dev.get_attribute('presence')
             attr.value=result
         if (id in self.zones_fall):
-            attr=dev.get_attribute(FUNCTION_FALL)
+            attr=dev.get_attribute('fall')
             attr.value=result
        
     def _exit(self):
