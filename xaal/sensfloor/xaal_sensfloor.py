@@ -1,5 +1,3 @@
-from gevent import monkey; monkey.patch_all()
-
 from xaal.lib import tools,Device
 from xaal.lib.asyncio import AsyncEngine
 import threading
